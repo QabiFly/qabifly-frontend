@@ -60,21 +60,21 @@ export default function HomePage() {
   }, [isAuth]);
 
   const buyerActions = [
-    { icon: Store,        l: "Shops",    s: "Nearby dukanen",  c: "#4B7BF5", b: "#EEF2FF", h: "/shops",   a: false },
-    { icon: ShoppingCart, l: "Cart",     s: "Apna cart",       c: "#7C3AED", b: "#F5F3FF", h: "/cart",    a: false },
-    { icon: Package,      l: "Orders",   s: "Track karo",      c: "#059669", b: "#ECFDF5", h: "/orders",  a: true  },
-    { icon: Wallet,       l: "Wallet",   s: "Balance dekho",   c: "#D97706", b: "#FFFBEB", h: "/wallet",  a: true  },
-    { icon: BookOpen,     l: "Khata",    s: "Udhaar track",    c: "#92400E", b: "#FEF3C7", h: "/udhaar",  a: true  },
+    { icon: Store,        l: "Shops",    s: "Nearby Shops",  c: "#4B7BF5", b: "#EEF2FF", h: "/shops",   a: false },
+    { icon: ShoppingCart, l: "Cart",     s: "Your cart",       c: "#7C3AED", b: "#F5F3FF", h: "/cart",    a: false },
+    { icon: Package,      l: "Orders",   s: "Track Orders",      c: "#059669", b: "#ECFDF5", h: "/orders",  a: true  },
+    { icon: Wallet,       l: "Wallet",   s: "Check Balance",   c: "#D97706", b: "#FFFBEB", h: "/wallet",  a: true  },
+    { icon: BookOpen,     l: "Accounts",    s: "Udhaar track",    c: "#92400E", b: "#FEF3C7", h: "/udhaar",  a: true  },
     { icon: Video,        l: "Videos",   s: "Kisan content",   c: "#BE185D", b: "#FDF2F8", h: "/videos",  a: false },
   ];
   const shopActions = [
     { icon: ChefHat, l: "Dashboard", s: "Shop manage",  c: "#059669", b: "#ECFDF5", h: "/shopkeeper/dashboard", a: true },
     { icon: Package, l: "Orders",   s: "New orders",    c: "#4B7BF5", b: "#EEF2FF", h: "/shopkeeper/orders",    a: true },
-    { icon: Wallet,  l: "Earnings", s: "Kamai dekho",   c: "#D97706", b: "#FFFBEB", h: "/wallet",               a: true },
+    { icon: Wallet,  l: "Earnings", s: "See your earnings",   c: "#D97706", b: "#FFFBEB", h: "/wallet",               a: true },
   ];
   const deliveryActions = [
     { icon: Bike,   l: "Dashboard", s: "Deliveries",   c: "#7C3AED", b: "#F5F3FF", h: "/delivery/dashboard", a: true },
-    { icon: Wallet, l: "Earnings",  s: "Kamai dekho",  c: "#D97706", b: "#FFFBEB", h: "/wallet",             a: true },
+    { icon: Wallet, l: "Earnings",  s: "See your earnings",  c: "#D97706", b: "#FFFBEB", h: "/wallet",             a: true },
   ];
 
   const actions =
@@ -91,7 +91,7 @@ export default function HomePage() {
         <div className="grad rounded-3xl p-5 shadow-xl shadow-purple-300/30">
           <p className="text-white/70 text-sm font-medium">Assalamu Alaikum! 👋</p>
           <h1 className="text-white text-2xl font-extrabold italic leading-tight mt-1">
-            {isAuth ? (user?.virtual_name || user?.full_name || "User") : "Mehman"}
+            {isAuth ? (user?.virtual_name || user?.full_name || "User") : "QabiFly Guest"}
           </h1>
           {user?.virtual_number && (
             <span className="font-mono text-white/70 text-xs mt-1 inline-block">
@@ -101,7 +101,7 @@ export default function HomePage() {
           <div className="flex items-center gap-1 mt-2">
             <MapPin size={11} className="text-white/60" />
             <span className="text-white/60 text-[11px] font-semibold uppercase tracking-wide">
-              Reoti, Ballia — Apna Gaon Apna Bazaar
+              QabiFly —— Aapki Zarurat Hamari zimmedari
             </span>
           </div>
           {!isAuth && (
@@ -118,7 +118,7 @@ export default function HomePage() {
             style={{ background: "linear-gradient(135deg,#4338CA,#7C3AED)" }}>
             <div className="p-4">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-white font-bold text-sm">🌦️ Reoti Mausam</span>
+                <span className="text-white font-bold text-sm">🌦️ Your Current Weather</span>
                 <span className="text-[10px] bg-white/20 text-white px-2 py-0.5 rounded-full font-bold">LIVE</span>
               </div>
               <div className="flex items-end gap-3 mb-3">
