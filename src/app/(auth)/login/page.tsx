@@ -61,15 +61,15 @@ export default function LoginPage() {
   };
 
   const sendEmailOTP = async () => {
-    if (!email) { toast.error("Email daalen"); return; }
+    if (!email) { toast.error("Enter your email"); return; }
     setLoad(true);
     try {
       await authApi.sendOTP(email);
       setSent(true);
-      toast.success("OTP bheja gaya! Email check karein.");
+      toast.success("OTP Sent Successfully.");
       setTimeout(() => document.getElementById("otp0")?.focus(), 200);
     } catch (e: any) {
-      toast.error(e.response?.data?.message || "OTP send nahi hua");
+      toast.error(e.response?.data?.message || "Failed to send OTP");
     } finally { setLoad(false); }
   };
 
@@ -87,7 +87,7 @@ export default function LoginPage() {
         done(r.data);
       }
     } catch (e: any) {
-      toast.error(e.response?.data?.message || "Galat OTP");
+      toast.error(e.response?.data?.message || "Incorrect OTP");
       clearOtp();
     } finally { setLoad(false); }
   };
@@ -113,11 +113,11 @@ export default function LoginPage() {
         toast.error(e.response?.data?.message || "Google login failed");
       } finally { setLoad(false); }
     },
-    onError: () => toast.error("Google login cancel ho gaya"),
+    onError: () => toast.error("Google login canceled."),
   });
 
   const sendPhoneOTP = async () => {
-    if (!phone) { toast.error("Phone number daalen"); return; }
+    if (!phone) { toast.error("Enter your Phone number"); return; }
     setLoad(true);
     try {
       if (!(window as any)._recap) {
@@ -144,8 +144,8 @@ export default function LoginPage() {
   };
 
   const mainLabel =
-    tab === "pass" ? "Login Karein" :
-    sent           ? "Verify Karein" :
+    tab === "pass" ? "Login" :
+    sent           ? "Verify" :
     "OTP Bhejein";
 
   return (
@@ -162,8 +162,8 @@ export default function LoginPage() {
           <div className="w-16 h-16 grad rounded-2xl inline-flex items-center justify-center shadow-xl shadow-purple-200 mb-3">
             <span className="text-3xl">🛒</span>
           </div>
-          <h1 className="text-2xl font-extrabold text-gray-900">Wapas Aayein!</h1>
-          <p className="text-gray-400 text-sm mt-1">QabiFly mein login karein</p>
+          <h1 className="text-2xl font-extrabold text-gray-900">Welcome back!</h1>
+          <p className="text-gray-400 text-sm mt-1">Continue to QabiFly</p>
         </div>
 
         {/* Google Button */}
@@ -186,7 +186,7 @@ export default function LoginPage() {
         {/* Divider */}
         <div className="flex items-center gap-3 mb-4">
           <div className="flex-1 h-px bg-gray-200" />
-          <span className="text-xs text-gray-400 font-medium">YA</span>
+          <span className="text-xs text-gray-400 font-medium">OR</span>
           <div className="flex-1 h-px bg-gray-200" />
         </div>
 
@@ -215,7 +215,7 @@ export default function LoginPage() {
                 type="email" value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && mainAction()}
-                placeholder="aapka@email.com"
+                placeholder="qabifly@zeaipc.in"
                 className="w-full bg-white rounded-xl pl-9 pr-4 py-3 text-sm border border-gray-200 outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 shadow-sm"
               />
             </div>
@@ -234,7 +234,7 @@ export default function LoginPage() {
                 type={show ? "text" : "password"} value={pass}
                 onChange={(e) => setPass(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && mainAction()}
-                placeholder="Password daalen"
+                placeholder="Password"
                 className="w-full bg-white rounded-xl pl-9 pr-10 py-3 text-sm border border-gray-200 outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 shadow-sm"
               />
               <button type="button" onClick={() => setShow(!show)}
@@ -245,7 +245,7 @@ export default function LoginPage() {
             <div className="text-right mt-1.5">
               <Link href="/forgot-password"
                 className="text-xs text-purple-500 font-semibold hover:text-purple-700">
-                Password bhool gaye?
+               Forgot password?
               </Link>
             </div>
           </div>
@@ -292,7 +292,7 @@ export default function LoginPage() {
             </div>
             <button onClick={() => { setSent(false); clearOtp(); }}
               className="text-xs text-gray-400 hover:text-gray-600 w-full text-center mt-2 py-1">
-              ← Wapas / Dobara bhejein
+              ← back
             </button>
           </div>
         )}
@@ -302,9 +302,9 @@ export default function LoginPage() {
         </Btn>
 
         <p className="text-center text-sm text-gray-500">
-          Naya account?{" "}
+          New account?{" "}
           <Link href="/register" className="text-purple-600 font-bold hover:text-purple-700">
-            Register Karein
+            Register
           </Link>
         </p>
 
