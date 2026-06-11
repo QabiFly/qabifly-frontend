@@ -74,7 +74,7 @@ export default function LoginPage() {
   };
 
   const verify = async (code = otp.join("")) => {
-    if (code.length !== 6) { toast.error("6-digit OTP daalen"); return; }
+    if (code.length !== 6) { toast.error("Enter 6-digit OTP"); return; }
     setLoad(true);
     try {
       if (tab === "otp") {
@@ -113,7 +113,7 @@ export default function LoginPage() {
         toast.error(e.response?.data?.message || "Google login failed");
       } finally { setLoad(false); }
     },
-    onError: () => toast.error("Google login canceled."),
+    onError: () => toast.error("Google login cancelled."),
   });
 
   const sendPhoneOTP = async () => {
@@ -129,7 +129,7 @@ export default function LoginPage() {
       const r   = await signInWithPhoneNumber(fbAuth, num, (window as any)._recap);
       setCfm(r);
       setSent(true);
-      toast.success("OTP bheja gaya!");
+      toast.success("OTP sent successfully!");
       setTimeout(() => document.getElementById("otp0")?.focus(), 200);
     } catch (e: any) {
       toast.error("OTP send failed: " + e.message);
@@ -146,7 +146,7 @@ export default function LoginPage() {
   const mainLabel =
     tab === "pass" ? "Login" :
     sent           ? "Verify" :
-    "OTP Bhejein";
+    "Send OTP";
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
