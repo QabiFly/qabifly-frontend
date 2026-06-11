@@ -309,8 +309,8 @@ export default function LoginPage() {
         </p>
 
         <p className="text-center mt-2">
-          <Link href="/" className="text-xs text-gray-300 hover:text-gray-400">
-            Guest ke taur pe continue karein →
+          <Link href="/" className="text-xs text-blue-400 hover:text-gray-400">
+            Continue as Guest →
           </Link>
         </p>
 
