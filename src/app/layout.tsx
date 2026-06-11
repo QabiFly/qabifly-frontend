@@ -6,8 +6,8 @@ import { Providers } from "@/components/providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title:       "QabiFly — Aapki Zarurat Hamari Zimmedari",
-  description: "Reoti Block, Ballia — Hyperlocal e-commerce platform",
+  title: "QabiFly — Aapki Zarurat Hamari Zimmedari",
+  description: "Hyperlocal e-commerce platform",
 };
 
 export default function RootLayout({
@@ -17,6 +17,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="hi">
+      <head>
+        <meta 
+          name="viewport" 
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" 
+        />
+      </head>
       <body className={inter.className}>
         <Providers>{children}</Providers>
       </body>
