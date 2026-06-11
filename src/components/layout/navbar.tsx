@@ -29,11 +29,12 @@ export function TopNav() {
                 Reoti, Ballia
               </span>
             </div>
+            <VirtualSearch />
           </div>
         </Link>
 
         <div className="flex items-center gap-1">
-          <VirtualSearch />
+          
           <Link
             href="/notifications"
             className="p-2 rounded-full hover:bg-gray-100 transition-colors"
