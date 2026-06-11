@@ -8,7 +8,6 @@ import {
 import { useAuthStore } from "@/store/authStore";
 import { useCartStore } from "@/store/cartStore";
 import { getInitial } from "@/lib/utils";
-import { VirtualSearch } from "./VirtualSearch";
 
 export function TopNav() {
   const { user, isAuth } = useAuthStore();
@@ -29,7 +28,7 @@ export function TopNav() {
                 Reoti, Ballia
               </span>
             </div>
-            <VirtualSearch />
+            
           </div>
         </Link>
 
