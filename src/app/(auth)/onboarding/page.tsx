@@ -30,7 +30,7 @@ export default function OnboardingPage() {
       .catch(() => {});
   }, [isAuth]);
   
-  const states = [
+  const state = [
   // 28 States
   "Andhra Pradesh",
   "Arunachal Pradesh",
