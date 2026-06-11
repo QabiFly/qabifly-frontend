@@ -17,22 +17,22 @@ export default function RegisterPage() {
   const [load,  setLoad]  = useState(false);
 
   const roles = [
-    { v:"BUYER",        e:"🛒", l:"Buyer",        s:"Shopping karein" },
-    { v:"SHOPKEEPER",   e:"🏪", l:"Shopkeeper",   s:"Dukan chalayein" },
-    { v:"DELIVERY_BOY", e:"🚴", l:"Delivery Boy", s:"Delivery karein" },
+    { v:"BUYER",        e:"🛒", l:"Buyer",        s:"Shopping/learning/medicine" },
+    { v:"SHOPKEEPER",   e:"🏪", l:"Shopkeeper",   s:"Shops Agent" },
+    { v:"DELIVERY_BOY", e:"🚴", l:"Delivery Boy", s:"Delivery Agent" },
   ];
 
   const handleRegister = async () => {
     if (!name || !email || !pass) {
-      toast.error("Sab fields zaroori hain"); return;
+      toast.error("All fields are required"); return;
     }
     if (pass.length < 8) {
-      toast.error("Password 8+ characters ka hona chahiye"); return;
+      toast.error("Password must be 8+ characters"); return;
     }
     setLoad(true);
     try {
       await authApi.register({ email, password: pass, full_name: name, role });
-      toast.success("Account ban gaya! Email mein OTP check karein.");
+      toast.success("Account created! Check your email for OTP.");
       router.push("/login");
     } catch (e: any) {
       const err = e.response?.data;
@@ -56,17 +56,17 @@ export default function RegisterPage() {
           <div className="w-16 h-16 grad rounded-2xl inline-flex items-center justify-center shadow-xl shadow-purple-200 mb-3">
             <span className="text-3xl">🛒</span>
           </div>
-          <h1 className="text-2xl font-extrabold text-gray-900">Account Banayein</h1>
-          <p className="text-gray-400 text-sm">QabiFly family join karein</p>
+          <h1 className="text-2xl font-extrabold text-gray-900">Create Account</h1>
+          <p className="text-gray-400 text-sm">Join QabiFly family</p>
         </div>
 
         {/* Name */}
         <div className="mb-3">
-          <label className="text-xs font-semibold text-gray-600 block mb-1">Poora Naam</label>
+          <label className="text-xs font-semibold text-gray-600 block mb-1">Full name</label>
           <div className="relative">
             <User className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400" size={15} />
             <input value={name} onChange={(e) => setName(e.target.value)}
-              placeholder="Arman Khan"
+              placeholder="Arman Ansari"
               className="w-full bg-white rounded-xl pl-9 pr-4 py-3 text-sm border border-gray-200 outline-none focus:border-purple-400 shadow-sm" />
           </div>
         </div>
@@ -77,7 +77,7 @@ export default function RegisterPage() {
           <div className="relative">
             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400" size={15} />
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-              placeholder="aapka@email.com"
+              placeholder="your@email.com"
               className="w-full bg-white rounded-xl pl-9 pr-4 py-3 text-sm border border-gray-200 outline-none focus:border-purple-400 shadow-sm" />
           </div>
         </div>
@@ -101,7 +101,7 @@ export default function RegisterPage() {
         {/* Role */}
         <div className="mb-5">
           <label className="text-xs font-semibold text-gray-600 block mb-2">
-            Aap kaun hain?
+            Select Account Type?
           </label>
           <div className="space-y-2">
             {roles.map((r) => (
@@ -127,12 +127,12 @@ export default function RegisterPage() {
         </div>
 
         <Btn onClick={handleRegister} loading={load} fullWidth className="mb-4 py-3.5">
-          Account Banayein
+          Create Account
         </Btn>
 
         <p className="text-center text-sm text-gray-500">
-          Pehle se account hai?{" "}
-          <Link href="/login" className="text-purple-600 font-bold">Login Karein</Link>
+          Already have a accoun?{" "}
+          <Link href="/login" className="text-purple-600 font-bold">Login</Link>
         </p>
       </div>
     </div>
