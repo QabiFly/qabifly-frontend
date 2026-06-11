@@ -8,6 +8,7 @@ import {
 import { useAuthStore } from "@/store/authStore";
 import { useCartStore } from "@/store/cartStore";
 import { getInitial } from "@/lib/utils";
+import { VirtualSearch } from "./VirtualSearch";
 
 export function TopNav() {
   const { user, isAuth } = useAuthStore();
@@ -32,6 +33,7 @@ export function TopNav() {
         </Link>
 
         <div className="flex items-center gap-1">
+          <VirtualSearch />
           <Link
             href="/notifications"
             className="p-2 rounded-full hover:bg-gray-100 transition-colors"
