@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
@@ -7,7 +7,16 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "QabiFly — Aapki Zarurat Hamari Zimmedari",
-  description: "Hyperlocal e-commerce platform",
+  description: "Reoti Block, Ballia — Hyperlocal e-commerce platform",
+};
+
+// ✅ Viewport ko alag se export karo (ye best practice hai)
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -17,12 +26,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="hi">
-      <head>
-        <meta 
-          name="viewport" 
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" 
-        />
-      </head>
       <body className={inter.className}>
         <Providers>{children}</Providers>
       </body>
