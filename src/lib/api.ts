@@ -75,14 +75,20 @@ export const userApi = {
 };
 
 // SHOPS — koi extra params nahi
-export const shopApi = {
-  all:    ()             => api.get("/shops/"),
+ export const shopApi = {
+  // All shops — koi filter nahi
+  all: (p?: object) => api.get("/shops/", { params: p }),
+
+  // Nearby — radius bahut bada rakho
   nearby: (lat: number, lon: number) =>
-    api.get("/shops/nearby/", { params: { lat, lon, radius: 10 } }),
-  detail: (slug: string) => api.get(`/shops/${slug}/`),
-  cats:   ()             => api.get("/shops/categories/"),
-  mine:   ()             => api.get("/shops/mine/"),
-  toggle: (slug: string) => api.post(`/shops/${slug}/toggle-open/`),
+    api.get("/shops/nearby/", {
+      params: { lat, lon, radius: 9999 }
+    }),
+
+  detail:  (slug: string) => api.get(`/shops/${slug}/`),
+  cats:    ()             => api.get("/shops/categories/"),
+  mine:    ()             => api.get("/shops/mine/"),
+  toggle:  (slug: string) => api.post(`/shops/${slug}/toggle-open/`),
 };
 
 // PRODUCTS — shop ID se filter karo, slug se nahi
