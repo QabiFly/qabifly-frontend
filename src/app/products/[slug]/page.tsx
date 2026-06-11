@@ -1,6 +1,5 @@
 "use client";
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { api, cartApi } from "@/lib/api";
 import { BotNav } from "@/components/layout/navbar";
@@ -11,130 +10,81 @@ import { toast } from "sonner";
 import { formatRupee } from "@/lib/utils";
 
 export default function ProductDetailPage() {
-  const { slug } = useParams();
-  const router = useRouter();
-  const { isAuth } = useAuthStore();
+  const { slug }    = useParams();
+  const router      = useRouter();
+  const { isAuth }  = useAuthStore();
   const { setCart } = useCartStore();
-
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [qty, setQty] = useState(1);
-  const [adding, setAdding] = useState(false);
-  const [imgIdx, setImgIdx] = useState(0);
+  const [qty,     setQty]     = useState(1);
+  const [adding,  setAdding]  = useState(false);
+  const [imgIdx,  setImgIdx]  = useState(0);
+  const fetched = useRef(false);
 
   useEffect(() => {
-    if (!slug) return;
-
-    setLoading(true);
-    setError(false);
-
+    if (!slug || fetched.current) return;
+    fetched.current = true;
     api.get(`/products/${slug}/`)
-      .then((res) => {
-        if (res.data?.data) {
-          setProduct(res.data.data);
-        } else {
-          setError(true);
-        }
-      })
-      .catch(() => {
-        setError(true);
-        toast.error("Product load nahi hua");
-      })
+      .then((r) => setProduct(r.data.data))
+      .catch(() => toast.error("Product load nahi hua"))
       .finally(() => setLoading(false));
   }, [slug]);
 
   const addToCart = async () => {
-    if (!isAuth) {
-      router.push("/login");
-      return;
-    }
+    if (!isAuth) { router.push("/login"); return; }
     setAdding(true);
     try {
       const r = await cartApi.add(product.id, qty);
       setCart(r.data.data);
-      toast.success(`${qty} item cart mein add ho gaya! 🛒`);
+      toast.success(`${qty} item cart mein! 🛒`);
     } catch (e: any) {
       toast.error(e.response?.data?.message || "Add nahi hua");
-    } finally {
-      setAdding(false);
-    }
+    } finally { setAdding(false); }
   };
 
-  // Loading State
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-slate-50">
-        <div className="h-72 bg-gray-200 animate-pulse" />
-        <div className="max-w-md mx-auto px-4 py-4 space-y-3">
-          <div className="h-8 bg-gray-200 rounded-xl animate-pulse" />
-          <div className="h-5 w-32 bg-gray-200 rounded animate-pulse" />
-          <div className="h-24 bg-gray-200 rounded-xl animate-pulse" />
-        </div>
+  if (loading) return (
+    <div className="min-h-screen bg-slate-50">
+      <div className="h-72 bg-gray-200 animate-pulse" />
+      <div className="max-w-md mx-auto px-4 py-4 space-y-3">
+        <div className="h-8 bg-gray-200 rounded-xl animate-pulse" />
+        <div className="h-5 w-32 bg-gray-200 rounded animate-pulse" />
+        <div className="h-24 bg-gray-200 rounded-xl animate-pulse" />
       </div>
-    );
-  }
+    </div>
+  );
 
-  // Error / Not Found State
-  if (error || !product) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 px-6 text-center">
-        <div className="text-6xl mb-4">😕</div>
-        <h2 className="text-xl font-bold mb-2">Product nahi mila</h2>
-        <p className="text-gray-500 mb-6">Ye product ab available nahi hai ya link galat hai.</p>
-        <button 
-          onClick={() => router.back()} 
-          className="grad text-white px-6 py-3 rounded-xl font-semibold"
-        >
-          Wapas Jao
-        </button>
-        <BotNav />
-      </div>
-    );
-  }
+  if (!product) return null;
 
-  const images = product.images?.length > 0 
-    ? product.images.map((i: any) => i.image) 
+  const images = product.images?.length > 0
+    ? product.images.map((i: any) => i.image)
     : product.primary_image ? [product.primary_image] : [];
 
   return (
     <div className="min-h-screen bg-slate-50 pb-32">
-      {/* Images Section */}
+      {/* Images */}
       <div className="relative bg-white">
         <div className="h-72 flex items-center justify-center bg-gray-50">
-          {images.length > 0 ? (
-            <img 
-              src={images[imgIdx]} 
-              alt={product.name} 
-              className="h-full w-full object-contain p-4" 
-            />
-          ) : (
-            <span className="text-8xl">📦</span>
-          )}
+          {images.length > 0
+            ? <img src={images[imgIdx]} alt={product.name} className="h-full w-full object-contain p-4" />
+            : <span className="text-8xl">📦</span>
+          }
         </div>
-
-        <button 
-          onClick={() => router.back()} 
-          className="absolute top-4 left-4 w-10 h-10 bg-black/20 backdrop-blur-sm rounded-full flex items-center justify-center"
-        >
+        <button onClick={() => router.back()}
+          className="absolute top-4 left-4 w-10 h-10 bg-black/20 backdrop-blur-sm rounded-full flex items-center justify-center">
           <ArrowLeft size={18} className="text-gray-800" />
         </button>
-
         {images.length > 1 && (
           <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
-            {images.map((image, i) => (
-              <button 
-                key={i} 
-                onClick={() => setImgIdx(i)}
-                className={`h-2 rounded-full transition-all ${i === imgIdx ? "grad w-5" : "w-2 bg-gray-300"}`} 
-              />
+            {images.map((_: any, i: number) => (
+              <button key={i} onClick={() => setImgIdx(i)}
+                className={`h-2 rounded-full transition-all ${i === imgIdx ? "grad w-5" : "w-2 bg-gray-300"}`} />
             ))}
           </div>
         )}
       </div>
 
-      {/* Product Info */}
       <div className="max-w-md mx-auto px-4 pt-4">
+        {/* Info */}
         <div className="bg-white rounded-2xl p-4 shadow-sm mb-3">
           <p className="text-xs text-purple-600 font-semibold mb-1">
             {product.category_name} · {product.shop_name}
@@ -142,7 +92,6 @@ export default function ProductDetailPage() {
           <h1 className="font-extrabold text-gray-900 text-xl leading-tight mb-2">
             {product.name}
           </h1>
-
           <div className="flex items-center gap-3 mb-3">
             <span className="text-2xl font-extrabold text-purple-600">
               {formatRupee(product.discounted_price || product.price)}
@@ -158,7 +107,6 @@ export default function ProductDetailPage() {
               </>
             )}
           </div>
-
           <div className="flex items-center gap-4 flex-wrap">
             <span className="bg-gray-100 text-gray-600 font-medium px-3 py-1 rounded-full text-xs">
               {product.unit}
@@ -170,8 +118,8 @@ export default function ProductDetailPage() {
                 <span className="text-gray-400 text-xs">({product.total_reviews})</span>
               </div>
             )}
-            <span className={`text-xs font-bold ${product.stock > 0 ? "text-green-600" : "text-red-400"}`}>
-              {product.stock > 0 ? `✓ In Stock (${product.stock})` : "✗ Out of Stock"}
+            <span className={`text-xs font-bold ${product.is_in_stock ? "text-green-600" : "text-red-400"}`}>
+              {product.is_in_stock ? `✓ In Stock (${product.stock})` : "✗ Out of Stock"}
             </span>
           </div>
         </div>
@@ -184,11 +132,9 @@ export default function ProductDetailPage() {
           </div>
         )}
 
-        {/* Shop Button */}
-        <button 
-          onClick={() => router.push(`/shops/${product.shop_slug}`)}
-          className="w-full bg-white rounded-2xl p-3 shadow-sm text-left flex items-center gap-3 mb-20"
-        >
+        {/* Shop */}
+        <button onClick={() => router.push(`/shops/${product.shop_slug}`)}
+          className="w-full bg-white rounded-2xl p-3 shadow-sm text-left flex items-center gap-3 mb-20">
           <span className="text-2xl">🏪</span>
           <div>
             <p className="font-bold text-sm text-gray-900">{product.shop_name}</p>
@@ -197,41 +143,31 @@ export default function ProductDetailPage() {
         </button>
       </div>
 
-      {/* Bottom Add to Cart Bar */}
-      {product.stock > 0 && (
-        <div className="fixed bottom-16 left-0 right-0 px-4 pb-3 z-50">
+      {/* Bottom CTA */}
+      {product.is_in_stock && (
+        <div className="fixed bottom-16 left-0 right-0 px-4 pb-3">
           <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-3 flex items-center gap-3">
             <div className="flex items-center gap-3 bg-gray-50 rounded-xl px-3 py-2">
-              <button 
-                onClick={() => setQty(Math.max(1, qty - 1))} 
-                className="w-7 h-7 bg-white rounded-full shadow-sm flex items-center justify-center"
-              >
+              <button onClick={() => setQty(Math.max(1, qty - 1))}
+                className="w-7 h-7 bg-white rounded-full shadow-sm flex items-center justify-center">
                 <Minus size={14} className="text-gray-600" />
               </button>
               <span className="font-extrabold text-gray-900 w-6 text-center">{qty}</span>
-              <button 
-                onClick={() => setQty(qty + 1)} 
-                className="w-7 h-7 grad rounded-full flex items-center justify-center shadow-sm"
-              >
+              <button onClick={() => setQty(qty + 1)}
+                className="w-7 h-7 grad rounded-full flex items-center justify-center shadow-sm">
                 <Plus size={14} className="text-white" />
               </button>
             </div>
-
-            <button 
-              onClick={addToCart} 
-              disabled={adding}
-              className="flex-1 grad text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 disabled:opacity-60 shadow-lg shadow-purple-200"
-            >
-              {adding ? (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              ) : (
-                <><ShoppingCart size={16} /> Cart Mein Daalo</>
-              )}
+            <button onClick={addToCart} disabled={adding}
+              className="flex-1 grad text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 disabled:opacity-60 shadow-lg shadow-purple-200">
+              {adding
+                ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                : <><ShoppingCart size={16} /> Cart Mein Daalo</>
+              }
             </button>
           </div>
         </div>
       )}
-
       <BotNav />
     </div>
   );
