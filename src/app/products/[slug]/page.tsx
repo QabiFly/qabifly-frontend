@@ -122,7 +122,7 @@ export default function ProductDetailPage() {
 
         {images.length > 1 && (
           <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
-            {images.map((_, i) => (
+            {images.map((image, i) => (
               <button 
                 key={i} 
                 onClick={() => setImgIdx(i)}
