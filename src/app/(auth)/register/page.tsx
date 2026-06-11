@@ -131,7 +131,7 @@ export default function RegisterPage() {
         </Btn>
 
         <p className="text-center text-sm text-gray-500">
-          Already have a accoun?{" "}
+          Already have an accoun?{" "}
           <Link href="/login" className="text-purple-600 font-bold">Login</Link>
         </p>
       </div>
