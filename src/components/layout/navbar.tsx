@@ -70,11 +70,11 @@ export function BotNav() {
   ];
 
   const shopkeeperTabs = [
-    { icon: Home,    label: "Home",      href: "/",                     auth: false },
-    { icon: ChefHat, label: "Dashboard", href: "/shopkeeper/dashboard", auth: true  },
-    { icon: Package, label: "Orders",    href: "/shopkeeper/orders",    auth: true  },
-    { icon: Store,   label: "Shop",      href: "/shopkeeper/shop",      auth: true  },
-    { icon: User,    label: "Profile",   href: "/profile",              auth: false },
+  { icon: Home,    label: "Home",      href: "/",                      auth: false },
+  { icon: ChefHat, label: "Dashboard", href: "/shopkeeper/dashboard",  auth: true  },
+  { icon: Package, label: "Products",  href: "/shopkeeper/products",   auth: true  },
+  { icon: Store,   label: "Orders",    href: "/shopkeeper/orders",     auth: true  },
+  { icon: User,    label: "Profile",   href: "/profile",               auth: false },
   ];
 
   const deliveryTabs = [
