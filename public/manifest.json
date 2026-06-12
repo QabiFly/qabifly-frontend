@@ -16,8 +16,8 @@
   "lang": "hi",
   "dir": "ltr",
   "shortcuts": [
-    { "name": "Shops",  "url": "/shops",  "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }] },
-    { "name": "Cart",   "url": "/cart",   "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }] },
-    { "name": "Orders", "url": "/orders", "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }] }
+    { "name": "Shops",  "url": "/shops",  "icons": [{ "src": "/icons/logo.png", "sizes": "512x512" }] },
+    { "name": "Cart",   "url": "/cart",   "icons": [{ "src": "/icons/logo.png", "sizes": "512x512" }] },
+    { "name": "Orders", "url": "/orders", "icons": [{ "src": "/icons/logo.png", "sizes": "512x512" }] }
   ]
 }
