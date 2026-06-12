@@ -23,17 +23,17 @@ export default function ProfilePage() {
           <div className="w-20 h-20 grad rounded-3xl mx-auto mb-5 flex items-center justify-center shadow-xl shadow-purple-200">
             <span className="text-4xl">👤</span>
           </div>
-          <h2 className="text-xl font-extrabold text-gray-900 mb-2">Login Karein</h2>
+          <h2 className="text-xl font-extrabold text-gray-900 mb-2">Login</h2>
           <p className="text-gray-400 text-sm mb-6">
-            Profile dekhne ke liye login karein
+            Join the QabiFly
           </p>
           <button onClick={() => router.push("/login")}
             className="w-full grad text-white font-bold py-3 rounded-xl shadow-lg shadow-purple-200 mb-3">
-            Login Karein
+            Login
           </button>
           <button onClick={() => router.push("/register")}
             className="w-full bg-white border-2 border-purple-200 text-purple-600 font-bold py-3 rounded-xl">
-            Naya Account Banayein
+            Create New Account
           </button>
         </div>
       </div>
