@@ -1,36 +1,42 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
-import { udhaarApi } from "@/lib/api";
+import { api } from "@/lib/api";
 import { TopNav, BotNav } from "@/components/layout/navbar";
-import { BookOpen, Clock, AlertCircle, CheckCircle } from "lucide-react";
-import { formatRupee } from "@/lib/utils";
+import {
+  BookOpen, AlertCircle, CheckCircle,
+  Clock, TrendingDown, ChevronRight,
+} from "lucide-react";
+import { formatRupee, timeAgo } from "@/lib/utils";
 import { toast } from "sonner";
 
 export default function UdhaarPage() {
-  const router     = useRouter();
-  const { isAuth } = useAuthStore();
+  const router           = useRouter();
+  const { isAuth }       = useAuthStore();
   const [data,    setData]    = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [tab,     setTab]     = useState<"all"|"active"|"overdue"|"paid">("all");
   const fetched = useRef(false);
 
   useEffect(() => {
     if (!isAuth) { router.push("/login"); return; }
     if (fetched.current) return;
     fetched.current = true;
-
-    udhaarApi.get()
-      .then((r) => setData(r.data.data))
+    api.get("/udhaar/mine/")
+      .then(r => setData(r.data.data))
       .catch(() => toast.error("Udhaar load nahi hua"))
       .finally(() => setLoading(false));
   }, [isAuth]);
 
-  const statusConfig = {
-    ACTIVE:  { color: "#D97706", bg: "#FFFBEB", icon: Clock,         label: "Active"  },
-    OVERDUE: { color: "#EF4444", bg: "#FEF2F2", icon: AlertCircle,   label: "Overdue" },
-    PAID:    { color: "#059669", bg: "#F0FDF4", icon: CheckCircle,   label: "Paid"    },
+  const STATUS = {
+    ACTIVE:  { label:"Active",  c:"text-amber-600",  b:"bg-amber-50",  icon:Clock         },
+    OVERDUE: { label:"Overdue", c:"text-red-500",    b:"bg-red-50",    icon:AlertCircle   },
+    PAID:    { label:"Paid",    c:"text-green-600",  b:"bg-green-50",  icon:CheckCircle   },
   };
+
+  const records = data?.records || data?.results || [];
+  const filtered = tab === "all" ? records : records.filter((r:any) => r.status === tab.toUpperCase());
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -43,86 +49,122 @@ export default function UdhaarPage() {
 
         {loading ? (
           <div className="space-y-3">
-            {[1,2].map((i) => (
-              <div key={i} className="h-24 bg-gray-200 rounded-2xl animate-pulse" />
-            ))}
+            {[1,2,3].map(i => <div key={i} className="h-24 bg-gray-200 rounded-2xl animate-pulse" />)}
           </div>
         ) : !data ? (
-          <div className="text-center py-16 bg-white rounded-2xl shadow-sm">
-            <BookOpen size={40} className="text-gray-200 mx-auto mb-3" />
-            <p className="text-gray-400 text-sm">Koi udhaar record nahi</p>
+          <div className="text-center py-20 bg-white rounded-2xl shadow-sm">
+            <BookOpen size={48} className="text-gray-200 mx-auto mb-4" />
+            <p className="text-gray-400">Koi udhaar record nahi</p>
           </div>
         ) : (
           <>
-            {/* Summary */}
+            {/* Summary Cards */}
             <div className="grid grid-cols-2 gap-3 mb-5">
               <div className="bg-white rounded-2xl p-4 shadow-sm">
-                <p className="text-xs text-amber-600 font-bold uppercase tracking-wide mb-1">
-                  Total Udhaar
-                </p>
+                <div className="flex items-center gap-2 mb-2">
+                  <TrendingDown size={16} className="text-amber-500" />
+                  <p className="text-xs font-bold text-amber-600 uppercase tracking-wide">Total Udhaar</p>
+                </div>
                 <p className="text-2xl font-extrabold text-amber-700">
                   {formatRupee(data.total_udhaar || "0")}
                 </p>
               </div>
               <div className="bg-white rounded-2xl p-4 shadow-sm">
-                <p className="text-xs text-red-500 font-bold uppercase tracking-wide mb-1">
-                  Overdue
-                </p>
+                <div className="flex items-center gap-2 mb-2">
+                  <AlertCircle size={16} className="text-red-500" />
+                  <p className="text-xs font-bold text-red-500 uppercase tracking-wide">Overdue</p>
+                </div>
                 <p className="text-2xl font-extrabold text-red-600">
                   {formatRupee(data.overdue_amount || "0")}
                 </p>
               </div>
             </div>
 
+            {/* Alert if overdue */}
+            {parseFloat(data.overdue_amount || "0") > 0 && (
+              <div className="bg-red-50 border border-red-200 rounded-2xl p-4 mb-4 flex items-start gap-3">
+                <AlertCircle size={18} className="text-red-500 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-bold text-red-700 text-sm">Overdue Amount Hai!</p>
+                  <p className="text-xs text-red-500 mt-0.5">
+                    {formatRupee(data.overdue_amount)} overdue ho gaya hai. Shopkeeper se baat karein.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Tabs */}
+            <div className="flex gap-1.5 overflow-x-auto pb-2 mb-4 scrollbar-hide">
+              {["all","active","overdue","paid"].map(t => (
+                <button key={t} onClick={() => setTab(t as any)}
+                  className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${
+                    tab === t ? "grad text-white border-transparent" : "bg-white text-gray-500 border-gray-200"
+                  }`}>
+                  {t === "all" ? "🌟 All" : t === "active" ? "⏳ Active" : t === "overdue" ? "⚠️ Overdue" : "✅ Paid"}
+                </button>
+              ))}
+            </div>
+
             {/* Records */}
-            <h2 className="font-extrabold text-gray-900 mb-3">Records</h2>
-            {(data.records || data.results || []).length === 0 ? (
-              <div className="text-center py-10 bg-white rounded-2xl shadow-sm">
-                <p className="text-gray-400 text-sm">Koi record nahi</p>
+            {filtered.length === 0 ? (
+              <div className="text-center py-12 bg-white rounded-2xl shadow-sm">
+                <BookOpen size={36} className="text-gray-200 mx-auto mb-3" />
+                <p className="text-gray-400 text-sm">Is category mein koi record nahi</p>
               </div>
             ) : (
               <div className="space-y-3">
-                {(data.records || data.results || []).map((r: any) => {
-                  const cfg = statusConfig[r.status as keyof typeof statusConfig]
-                    || statusConfig.ACTIVE;
-                  const Icon = cfg.icon;
+                {filtered.map((r:any) => {
+                  const s = STATUS[r.status as keyof typeof STATUS] || STATUS.ACTIVE;
+                  const Icon = s.icon;
+                  const daysLeft = r.due_date
+                    ? Math.ceil((new Date(r.due_date).getTime() - Date.now()) / 86400000)
+                    : null;
                   return (
-                    <div key={r.id}
-                      className="bg-white rounded-2xl p-4 shadow-sm">
+                    <div key={r.id} className="bg-white rounded-2xl p-4 shadow-sm">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="font-bold text-gray-900 text-sm">
-                          {r.shop_name || "Shop"}
-                        </span>
-                        <span
-                          className="text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1"
-                          style={{ color: cfg.color, backgroundColor: cfg.bg }}
-                        >
-                          <Icon size={11} />
-                          {cfg.label}
+                        <span className="font-bold text-gray-900 text-sm">{r.shop_name}</span>
+                        <span className={`flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full ${s.c} ${s.b}`}>
+                          <Icon size={11} /> {s.label}
                         </span>
                       </div>
                       <div className="flex items-end justify-between">
                         <div>
                           <p className="text-xs text-gray-400 mb-0.5">Outstanding</p>
                           <p className="text-2xl font-extrabold text-amber-700">
-                            {formatRupee(r.outstanding_amount || r.amount || "0")}
+                            {formatRupee(r.outstanding_amount || r.amount)}
                           </p>
                         </div>
                         {r.due_date && (
                           <div className="text-right">
-                            <p className="text-xs text-gray-400 mb-0.5">Due Date</p>
-                            <p className="text-sm font-bold text-gray-700">
+                            <p className="text-xs text-gray-400">Due Date</p>
+                            <p className={`text-sm font-extrabold ${
+                              daysLeft !== null && daysLeft < 0
+                                ? "text-red-500"
+                                : daysLeft !== null && daysLeft <= 3
+                                ? "text-amber-500"
+                                : "text-gray-700"
+                            }`}>
                               {new Date(r.due_date).toLocaleDateString("en-IN", {
-                                day: "numeric", month: "short", year: "numeric"
+                                day:"numeric", month:"short"
                               })}
                             </p>
+                            {daysLeft !== null && daysLeft < 0 && (
+                              <p className="text-[10px] text-red-500 font-bold">
+                                {Math.abs(daysLeft)} din overdue!
+                              </p>
+                            )}
+                            {daysLeft !== null && daysLeft >= 0 && (
+                              <p className="text-[10px] text-gray-400">
+                                {daysLeft} din bache
+                              </p>
+                            )}
                           </div>
                         )}
                       </div>
                       {r.status === "OVERDUE" && (
                         <div className="mt-3 bg-red-50 rounded-xl p-2.5">
                           <p className="text-xs text-red-600 font-medium">
-                            ⚠️ Yeh udhaar overdue ho gaya hai. Shopkeeper se baat karein.
+                            ⚠️ Shopkeeper se contact karein ya payment karein
                           </p>
                         </div>
                       )}
