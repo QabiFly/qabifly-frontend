@@ -34,7 +34,7 @@ export default function OrdersPage() {
         const d = r.data.data?.results || r.data.data || [];
         setOrders(Array.isArray(d) ? d : []);
       })
-      .catch(() => toast.error("Orders load nahi hue"))
+      .catch(() => toast.error("Orders loaded yet!"))
       .finally(() => setLoading(false));
   }, [isAuth]);
 
@@ -43,7 +43,7 @@ export default function OrdersPage() {
       <TopNav />
       <div className="max-w-md mx-auto px-4 pt-4 pb-24">
         <h1 className="text-xl font-extrabold text-gray-900 mb-4">
-          Mere Orders 📦
+          My Orders 📦
         </h1>
 
         {loading ? (
@@ -57,11 +57,11 @@ export default function OrdersPage() {
             <Package size={56} className="text-gray-200 mx-auto mb-4" />
             <h3 className="text-gray-500 font-bold">Koi order nahi</h3>
             <p className="text-gray-400 text-sm mt-1 mb-5">
-              Shops se kuch order karein
+              Order from shop
             </p>
             <button onClick={() => router.push("/shops")}
               className="grad text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-purple-200">
-              Shops Dekho
+              Shops
             </button>
           </div>
         ) : (
