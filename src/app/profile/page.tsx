@@ -45,7 +45,7 @@ export default function ProfilePage() {
     const refresh = Cookies.get("qf_refresh") || "";
     try { if (refresh) await authApi.logout(refresh); } catch {}
     logout();
-    toast.success("Logout ho gaya");
+    toast.success("Logout Successfully!");
     router.push("/");
   };
 
@@ -53,9 +53,9 @@ export default function ProfilePage() {
 
   const menuItems = [
     ...(role === "BUYER" ? [
-      { icon: Package,  label: "Mere Orders",    href: "/orders",  color: "#7C3AED" },
+      { icon: Package,  label: "My Orders",    href: "/orders",  color: "#7C3AED" },
       { icon: Wallet,   label: "Wallet",           href: "/wallet",  color: "#D97706" },
-      { icon: BookOpen, label: "Digital Khata",   href: "/udhaar",  color: "#92400E" },
+      { icon: BookOpen, label: "Digital Account",   href: "/udhaar",  color: "#92400E" },
       { icon: Bell,     label: "Notifications",    href: "/notifications", color: "#4B7BF5" },
     ] : []),
     ...(role === "SHOPKEEPER" ? [
