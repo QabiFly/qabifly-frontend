@@ -1,0 +1,13 @@
+{
+  "background_color": "#ffffff",
+  "description": "Hyperlocal e-commerce platform",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "QabiFly",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "QabiFly",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "id": "in.zeaipc.qqbifly"
+}
