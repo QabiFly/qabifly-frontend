@@ -30,7 +30,7 @@ export default function OrderDetailPage() {
     fetched.current = true;
     orderApi.detail(orderNumber as string)
       .then((r) => setOrder(r.data.data))
-      .catch(() => toast.error("Order nahi mila"))
+      .catch(() => toast.error("Order not found"))
       .finally(() => setLoading(false));
   }, [orderNumber]);
 
@@ -49,7 +49,7 @@ export default function OrderDetailPage() {
     <div className="min-h-screen flex items-center justify-center">
       <div className="text-center">
         <Package size={48} className="text-gray-200 mx-auto mb-3" />
-        <p className="text-gray-500">Order nahi mila</p>
+        <p className="text-gray-500">Order not found</p>
         <button onClick={() => router.back()}
           className="text-purple-600 font-bold text-sm mt-2">
           ← Wapas
@@ -67,7 +67,7 @@ export default function OrderDetailPage() {
 
         <button onClick={() => router.back()}
           className="flex items-center gap-1.5 text-gray-400 text-sm mb-4 hover:text-gray-600">
-          <ArrowLeft size={14} /> Wapas
+          <ArrowLeft size={14} /> Back
         </button>
 
         {/* Header */}
@@ -124,7 +124,7 @@ export default function OrderDetailPage() {
 
         {order.status === "CANCELLED" && (
           <div className="bg-red-50 border border-red-200 rounded-2xl p-4 mb-4 text-center">
-            <p className="text-red-600 font-bold text-lg">❌ Order Cancel Ho Gaya</p>
+            <p className="text-red-600 font-bold text-lg">❌ Order Cancelled!</p>
           </div>
         )}
 
@@ -174,15 +174,15 @@ export default function OrderDetailPage() {
               if (!confirm("Order cancel karein?")) return;
               try {
                 await orderApi.cancel(order.order_number, "Customer request");
-                toast.success("Order cancel ho gaya");
+                toast.success("Order cancelled");
                 router.push("/orders");
               } catch {
-                toast.error("Cancel nahi hua");
+                toast.error("Cancellation Failed!");
               }
             }}
             className="w-full py-3 bg-red-50 border border-red-200 text-red-500 font-bold rounded-xl text-sm"
           >
-            Order Cancel Karein
+            Cancel Order
           </button>
         )}
       </div>
