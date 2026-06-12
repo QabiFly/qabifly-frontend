@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QabiFly — Offline</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, sans-serif;
+      background: linear-gradient(135deg, #4B7BF5, #B044E8);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .card {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 40px 30px;
+      max-width: 320px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .icon { font-size: 64px; margin-bottom: 20px; }
+    h1 { font-size: 24px; font-weight: 900; margin-bottom: 10px; }
+    p { font-size: 14px; opacity: 0.8; margin-bottom: 24px; line-height: 1.6; }
+    button {
+      background: white;
+      color: #6C3DC8;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">📶</div>
+    <h1>Offline Hain</h1>
+    <p>Internet connection nahi hai. Check karein aur dobara try karein.</p>
+    <button onclick="window.location.reload()">Dobara Try Karein</button>
+  </div>
+</body>
+</html>
