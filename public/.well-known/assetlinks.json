@@ -1,1 +1,8 @@
-
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "in.zeaipc.qabifly",
+        "sha256_cert_fingerprints": ["73:B5:27:D8:4A:0D:1A:05:34:BF:BF:64:EA:33:9A:9E:AA:D9:F6:16:00:FF:9D:40:02:0A:8D:4D:26:06:6C:84"]
+      }
+    }]
