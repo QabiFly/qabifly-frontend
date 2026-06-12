@@ -1,27 +1,22 @@
 {
-"id": "in.zeaipc.qabifly",
-"name": "QabiFly",
-"short_name": "QabiFly",
-"description": "Hyperlocal e-commerce platform",
-"start_url": "/",
-"scope": "/",
-"display": "standalone",
-"orientation": "any",
-"background_color": "#ffffff",
-"theme_color": "#ffffff",
-"dir": "ltr",
-"icons": [
-{
-"src": "/logo1.png",
-"sizes": "192x192",
-"type": "image/png",
-"purpose": "any maskable"
-},
-{
-"src": "/logo.png",
-"sizes": "512x512",
-"type": "image/png",
-"purpose": "any maskable"
-}
-]
+  "name": "QabiFly — Aapki Zarurat Hamari Zimmedari",
+  "short_name": "QabiFly",
+  "description": "Reoti Block, Ballia — Hyperlocal E-Commerce",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#EEF2FF",
+  "theme_color": "#6C3DC8",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/icons/icon-192.png",  "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icons/icon-512.png",  "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "categories": ["shopping", "food", "lifestyle"],
+  "lang": "hi",
+  "dir": "ltr",
+  "shortcuts": [
+    { "name": "Shops",  "url": "/shops",  "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }] },
+    { "name": "Cart",   "url": "/cart",   "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }] },
+    { "name": "Orders", "url": "/orders", "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }] }
+  ]
 }
