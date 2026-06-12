@@ -5,9 +5,8 @@ import { Providers } from "@/components/providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "QabiFly — Aapki Zarurat Hamari Zimmedari",
-  description: "Reoti Block, Ballia — Hyperlocal e-commerce platform",
+export const metadata = {
+  manifest: "/manifest.json",
 };
 
 // ✅ Viewport ko alag se export karo (ye best practice hai)
