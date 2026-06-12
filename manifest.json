@@ -1,13 +1,27 @@
 {
-  "background_color": "#ffffff",
-  "description": "Hyperlocal e-commerce platform",
-  "dir": "ltr",
-  "display": "standalone",
-  "name": "QabiFly",
-  "orientation": "any",
-  "scope": "/",
-  "short_name": "QabiFly",
-  "start_url": "/",
-  "theme_color": "#ffffff",
-  "id": "in.zeaipc.qabifly"
+"id": "in.zeaipc.qabifly",
+"name": "QabiFly",
+"short_name": "QabiFly",
+"description": "Hyperlocal e-commerce platform",
+"start_url": "/",
+"scope": "/",
+"display": "standalone",
+"orientation": "any",
+"background_color": "#ffffff",
+"theme_color": "#ffffff",
+"dir": "ltr",
+"icons": [
+{
+"src": "/logo.png",
+"sizes": "192x192",
+"type": "image/png",
+"purpose": "any maskable"
+},
+{
+"src": "/logo.png",
+"sizes": "512x512",
+"type": "image/png",
+"purpose": "any maskable"
+}
+]
 }
