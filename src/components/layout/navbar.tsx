@@ -8,10 +8,12 @@ import {
 import { useAuthStore } from "@/store/authStore";
 import { useCartStore } from "@/store/cartStore";
 import { getInitial } from "@/lib/utils";
+import { useNotifications } from "@/hooks/useNotifications";
 
 export function TopNav() {
   const { user, isAuth } = useAuthStore();
   const router = useRouter();
+  const { count } = useNotifications();
 
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
@@ -24,28 +26,25 @@ export function TopNav() {
             <p className="text-sm font-extrabold grad-t">QabiFly</p>
             <div className="flex items-center gap-0.5">
               <MapPin size={8} className="text-gray-400" />
-              <span className="text-[9px] text-gray-400 font-medium">
-                Reoti, Ballia
-              </span>
+              <span className="text-[9px] text-gray-400 font-medium">Reoti, Ballia</span>
             </div>
-            
           </div>
         </Link>
 
         <div className="flex items-center gap-1">
-          
-          <Link
-            href="/notifications"
-            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
-          >
+          <Link href="/notifications" className="relative p-2 rounded-full hover:bg-gray-100">
             <Bell size={18} className="text-gray-600" />
+            {count > 0 && (
+              <span className="absolute top-1 right-1 w-4 h-4 grad rounded-full text-[9px] text-white font-bold flex items-center justify-center">
+                {count > 9 ? "9+" : count}
+              </span>
+            )}
           </Link>
           <button
             onClick={() => router.push(isAuth ? "/profile" : "/login")}
-            className="w-8 h-8 rounded-full grad flex items-center justify-center ml-1 shadow-md"
-          >
+            className="w-8 h-8 rounded-full grad flex items-center justify-center ml-1 shadow-md">
             <span className="text-white font-extrabold text-xs">
-              {isAuth ? getInitial(user?.virtual_name || user?.full_name) : "G"}
+              {isAuth ? (user?.virtual_name || user?.full_name || "U")[0].toUpperCase() : "G"}
             </span>
           </button>
         </div>
