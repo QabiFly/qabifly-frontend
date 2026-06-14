@@ -68,7 +68,10 @@ export default function ProfilePage() {
       { icon: Bike,     label: "Delivery Dashboard", href: "/delivery/dashboard", color: "#7C3AED" },
       { icon: Wallet,   label: "Earnings",           href: "/wallet",             color: "#D97706" },
     ] : []),
-    { icon: Shield, label: "KYC Verification", href: "#", color: "#6366F1" },
+    { icon: Shield, label: "KYC Verification", href: "/kyc", color: "#6366F1" },
+    { icon: CreditCard, label: "EMI Plans",         href: "/emi",         color: "#7C3AED" },
+    { icon: ArrowUpRight, label: "Withdraw",        href: "/wallet/withdraw", color: "#D97706" },
+    
   ];
 
   return (
