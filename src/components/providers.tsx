@@ -10,8 +10,8 @@ import Cookies from "js-cookie";
 const qc = new QueryClient({
   defaultOptions: {
     queries: {
-      retry:                1,
-      staleTime:            5 * 60 * 1000,
+      retry: 1,
+      staleTime: 5 * 60 * 1000,
       refetchOnWindowFocus: false,
     },
   },
@@ -26,11 +26,19 @@ function AuthBoot() {
     done.current = true;
 
     const token = Cookies.get("qf_access");
-    if (!token) { setLoading(false); return; }
+    if (!token) {
+      setLoading(false);
+      return;
+    }
 
     authApi.me()
-      .then((r) => setUser(r.data.data))
-      .catch(() => { logout(); setLoading(false); });
+      .then((r) => {
+        const user = r.data.data || r.data;
+        setUser(user);
+      })
+      .catch(() => {
+        logout();
+      });
   }, []);
 
   return null;
