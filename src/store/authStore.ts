@@ -7,7 +7,7 @@ import { User } from "@/types";
 interface AuthStore {
   user:       User | null;
   isAuth:     boolean;
-  isLoading:  boolean;
+  isLoading:  boolean;  // ← Yahi sahi naam hai
   setUser:    (u: User) => void;
   setTokens:  (access: string, refresh: string) => void;
   logout:     () => void;
@@ -17,29 +17,33 @@ interface AuthStore {
 export const useAuthStore = create<AuthStore>()(
   persist(
     (set) => ({
-      user:       null,
-      isAuth:     false,
-      isLoading:  true,
+      user:      null,
+      isAuth:    false,
+      isLoading: true,
 
       setUser: (user) =>
         set({ user, isAuth: true, isLoading: false }),
 
       setTokens: (access, refresh) => {
-        Cookies.set("qf_access",  access,  { expires: 1, secure: true, sameSite: "lax" });
-        Cookies.set("qf_refresh", refresh, { expires: 7, secure: true, sameSite: "lax" });
+        Cookies.set("qf_access",  access,  { expires: 1,  secure: true, sameSite: "lax" });
+        Cookies.set("qf_refresh", refresh, { expires: 7,  secure: true, sameSite: "lax" });
       },
 
       logout: () => {
         Cookies.remove("qf_access");
         Cookies.remove("qf_refresh");
-        set({ user: null, isAuth: false });
+        set({ user: null, isAuth: false, isLoading: false });
       },
 
       setLoading: (v) => set({ isLoading: v }),
     }),
     {
-      name:       "qabifly-auth",
+      name: "qabifly-auth",
       partialize: (s) => ({ user: s.user, isAuth: s.isAuth }),
+      onRehydrateStorage: () => (state) => {
+        // Rehydrate hone ke baad loading false karo
+        if (state) state.isLoading = false;
+      },
     }
   )
 );
