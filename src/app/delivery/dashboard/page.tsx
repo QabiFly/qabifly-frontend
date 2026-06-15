@@ -39,7 +39,7 @@ export default function DeliveryDashboard() {
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
   const [verifying, setVerifying] = useState(false);
   
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const loadWallet = useCallback(async () => {
