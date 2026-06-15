@@ -88,7 +88,6 @@ export const userApi = {
   detail:  (slug: string) => api.get(`/shops/${slug}/`),
   cats:    ()             => api.get("/shops/categories/"),
   mine:    ()             => api.get("/shops/mine/"),
-  toggle:  (slug: string) => api.post(`/shops/${slug}/toggle-open/`),
 };
 
 // PRODUCTS — shop ID se filter karo, slug se nahi
@@ -116,11 +115,6 @@ export const orderApi = {
   mine:       ()                     => api.get("/orders/mine/"),
   detail:     (n: string)            => api.get(`/orders/${n}/`),
   cancel:     (n: string, r: string) => api.post(`/orders/${n}/cancel/`, { reason: r }),
-  shopOrders: (s?: string)           => api.get("/orders/shop/", { params: s ? { status: s } : {} }),
-  setStatus:  (n: string, s: string) => api.post(`/orders/${n}/status/`, { status: s }),
-  deliveries: ()                     => api.get("/orders/delivery/mine/"),
-  accept:     (n: string)            => api.post(`/orders/${n}/delivery/accept/`),
-  deliverOTP: (n: string, o: string) => api.post(`/orders/${n}/delivery/verify-otp/`, { otp: o }),
 };
 
 // WALLET
