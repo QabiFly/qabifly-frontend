@@ -14,7 +14,7 @@ export default function NotificationsPage() {
   const [notifs,   setNotifs]   = useState<any[]>([]);
   const [loading,  setLoading]  = useState(true);
   const [unread,   setUnread]   = useState(0);
-  const intervalRef = useRef<NodeJS.Timeout>();
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -35,12 +35,16 @@ export default function NotificationsPage() {
 
     // Auto-refresh every 30 seconds
     intervalRef.current = setInterval(load, 30000);
-    return () => clearInterval(intervalRef.current);
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
   }, [isAuth, isLoading, load]);
 
   const markAll = async () => {
     try {
-      await api.post("/notifications/mark-all-read/");
+      await api.post("/notifications/read-all/");
       setNotifs((p) => p.map((n) => ({ ...n, is_read: true })));
       setUnread(0);
     } catch {}
