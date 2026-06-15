@@ -7,7 +7,7 @@ import { useAuthStore } from "@/store/authStore";
 export function useNotifications() {
   const { isAuth } = useAuthStore();
   const [count, setCount] = useState(0);
-  const timerRef = useRef<any>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const check = useCallback(async () => {
     if (!isAuth) return;
@@ -21,7 +21,11 @@ export function useNotifications() {
     if (!isAuth) return;
     check();
     timerRef.current = setInterval(check, 20000); // 20 sec
-    return () => clearInterval(timerRef.current);
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
   }, [isAuth, check]);
 
   return { count };
