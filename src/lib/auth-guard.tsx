@@ -9,12 +9,14 @@ export function useGuard(requiredRole?: string) {
   const router = useRouter();
   const { user, isAuth, setUser, logout } = useAuthStore();
   const [ready, setReady] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const token = Cookies.get("qf_access");
     
     if (!token) {
       router.replace("/login");
+      setIsLoading(false);
       return;
     }
 
@@ -24,6 +26,7 @@ export function useGuard(requiredRole?: string) {
         return;
       }
       setReady(true);
+      setIsLoading(false);
       return;
     }
 
@@ -37,12 +40,14 @@ export function useGuard(requiredRole?: string) {
           return;
         }
         setReady(true);
+        setIsLoading(false);
       })
       .catch(() => {
         logout();
         router.replace("/login");
+        setIsLoading(false);
       });
   }, []);
 
-  return { user: user!, ready };
+  return { user, ready, isLoading };
 }
